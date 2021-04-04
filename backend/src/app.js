@@ -1,6 +1,5 @@
 const express = require('express');
 const multer = require('./middleware/multer-config')
-// const multer = require('multer');
 const cloudinary = require('./middleware/couldinary-config');
 const pool = require('./model/db')
 const fs = require('fs');
