@@ -13,15 +13,20 @@ app.use(express.json());
 app.post( '/api/v1/product', multer, async (req, res) => {
     try {
 
-        // const uploader = async (path) => await cloudinary.uploads(path, 'My Assets');
+        const uploader = async (path) => await cloudinary.uploads(path, 'My Assets');
 
-        // const url = [];
-        // const read = fs.readdir('./IMAGES')
-        // console.log(read)
-        // const {path} = req.files
-        // const newPath = await uploader(path)
-        // url.push(newPath);
-        // fs.unlinkSync(path);
+        const url = [];
+        const filesArray = req.files
+        // console.log(filesArray, filesArray[0]);
+        for (let i = 0; i < filesArray.length; i++) {
+            const obj = filesArray[i]
+            const {path} = obj
+            console.log(path, 'path');
+            const newPath = await uploader(path)
+            console.log( newPath,'newPath');
+            url.push(newPath);
+            fs.unlinkSync(path);
+        }
 
         const formData = req.body;
         let {product_name} = formData;
@@ -31,12 +36,15 @@ app.post( '/api/v1/product', multer, async (req, res) => {
         let {size} = formData;
         let {colour} = formData;
         let {quantity} = formData;
-        let prices = formData;
+        let {prices} = formData;
         let array = [];
-        let query = 'INSERT INTO product(product_name, product_description, date_uploaded, date_edited, product_varieties)  VALUES($1, $2, $3, $4, $5) RETURNING product_id, product_name, product_varieties'
-        
+        let query = `INSERT INTO product(product_name, product_description, date_uploaded, date_edited, product_varieties)  
+                    VALUES($1, $2, $3, $4, $5) RETURNING product_id, product_name, product_varieties`
+        // console.log(formData, size, colour, quantity, prices)
         if (formData){
+            
             if ((size.length > 1) && (colour.length > 1) && (quantity.length > 1) && (prices.length > 1)) {
+
                 for (let i = 0;  i < size.length; i++) {
                 array.push(    
                         {
@@ -48,7 +56,7 @@ app.post( '/api/v1/product', multer, async (req, res) => {
                         }
                     )
                 }
-            }else {
+            } else {
                 array.push({
                     size: size[0],
                     colour: colour[0],
@@ -63,7 +71,8 @@ app.post( '/api/v1/product', multer, async (req, res) => {
             console.log(result.rows)
             res.status(201).json({
                 status: 'success',
-                message: result.rows
+                message: result.rows,
+                files: req.files
             })
 
         } else{
@@ -83,7 +92,7 @@ app.post( '/api/v1/product', multer, async (req, res) => {
     
 });
 
-app.get('api/v1/veiw-product', async (req, res) => {
+app.get('api/v1/view-product', async (req, res) => {
 
     try {
         let query = 'SELECT product_name, product_description, date_uploaded, date_edited, product_varieties FROM product';
