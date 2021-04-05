@@ -19,9 +19,9 @@ app.post( '/api/v1/product', multer, async (req, res) => {
         for (let i = 0; i < filesArray.length; i++) {
             const obj = filesArray[i];
             const {path} = obj;
-            console.log(path, 'path');
+            // console.log(path, 'path');
             const newPath = await uploader(path)
-            console.log( newPath,'newPath');
+            // console.log( newPath,'newPath');
             url.push(newPath);
             fs.unlinkSync(path);
         }
@@ -38,7 +38,7 @@ app.post( '/api/v1/product', multer, async (req, res) => {
         let array = [];
         let query = `INSERT INTO product(product_name, product_description, date_uploaded, date_edited, product_varieties)  
                     VALUES($1, $2, $3, $4, $5) RETURNING product_id, product_name, product_varieties`;
-                    
+
         if (formData){
             
             if ((size.length > 1) && (colour.length > 1) && (quantity.length > 1) && (prices.length > 1)) {
