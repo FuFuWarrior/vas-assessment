@@ -70,7 +70,6 @@ app.post( '/api/v1/product', multer, async (req, res) => {
             res.status(201).json({
                 status: 'success',
                 message: result.rows,
-                files: req.files
             })
 
         } else{
@@ -84,7 +83,6 @@ app.post( '/api/v1/product', multer, async (req, res) => {
         res.status(500).json({
             status: 'error' ,
             message: 'Something Unexpected happened',
-            error: error
         }) 
     }
     
