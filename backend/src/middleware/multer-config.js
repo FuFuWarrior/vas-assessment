@@ -10,7 +10,7 @@ let name = "devstory"
 const storage = multer.diskStorage({
     // Set file destination
     destination: (req, file, callback) => {
-    callback(null, "IMAGES");
+    callback(null, "./src/IMAGES");
     },
     filename: (req, file, callback) => {
         const extension = MIMES_TYPE[file.mimetype];
