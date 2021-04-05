@@ -19,7 +19,7 @@ app.post( '/api/v1/product', multer, async (req, res) => {
         for (let i = 0; i < filesArray.length; i++) {
             const obj = filesArray[i];
             const {path} = obj;
-            // console.log(path, 'path');
+            console.log(path, 'path');
             const newPath = await uploader(path)
             // console.log( newPath,'newPath');
             url.push(newPath);
@@ -83,7 +83,8 @@ app.post( '/api/v1/product', multer, async (req, res) => {
     } catch (error) {
         res.status(500).json({
             status: 'error' ,
-            message: 'Something Unexpected happened'
+            message: 'Something Unexpected happened',
+            error: error
         }) 
     }
     
