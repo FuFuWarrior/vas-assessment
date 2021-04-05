@@ -1,10 +1,9 @@
 const express = require('express');
 const multer = require('./middleware/multer-config')
 const cloudinary = require('./middleware/couldinary-config');
-const pool = require('./model/db')
+const pool = require('./model/db');
 const fs = require('fs');
 
-// const upload = multer()
 const app = express();
 
 app.use(express.json());
@@ -18,8 +17,8 @@ app.post( '/api/v1/product', multer, async (req, res) => {
         const filesArray = req.files
         // console.log(filesArray, filesArray[0]);
         for (let i = 0; i < filesArray.length; i++) {
-            const obj = filesArray[i]
-            const {path} = obj
+            const obj = filesArray[i];
+            const {path} = obj;
             console.log(path, 'path');
             const newPath = await uploader(path)
             console.log( newPath,'newPath');
@@ -38,8 +37,8 @@ app.post( '/api/v1/product', multer, async (req, res) => {
         let {prices} = formData;
         let array = [];
         let query = `INSERT INTO product(product_name, product_description, date_uploaded, date_edited, product_varieties)  
-                    VALUES($1, $2, $3, $4, $5) RETURNING product_id, product_name, product_varieties`
-        // console.log(formData, size, colour, quantity, prices)
+                    VALUES($1, $2, $3, $4, $5) RETURNING product_id, product_name, product_varieties`;
+                    
         if (formData){
             
             if ((size.length > 1) && (colour.length > 1) && (quantity.length > 1) && (prices.length > 1)) {
@@ -85,8 +84,7 @@ app.post( '/api/v1/product', multer, async (req, res) => {
         res.status(500).json({
             status: 'error' ,
             message: 'Something Unexpected happened'
-        })
-        console.log(error)  
+        }) 
     }
     
 });
